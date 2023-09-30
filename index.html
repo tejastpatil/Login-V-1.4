@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cascading Dropdown Example</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <h1>Select the Phase and Subject</h1>
+    <div class="container">
+      <select id="phaseDropdown">
+        <option value="">Select Phase</option>
+      </select>
+      <select id="subjectDropdown">
+        <option value="">Select Subject</option>
+      </select>
+
+      <br /><br />
+      <button type="button" id="submitBtn">Go</button>
+    </div>
+
+    <table id="pdfTable">
+      <thead hidden>
+        <tr>
+          <th>Selected Phase</th>
+          <th>Selected Subject</th>
+          <th>PDF Name</th>
+          <th>PDF Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- PDF names and links will be dynamically added here -->
+      </tbody>
+    </table>
+  </body>
+  <script src="script.js"></script>
+</html>
