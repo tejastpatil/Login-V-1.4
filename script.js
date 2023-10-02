@@ -59,13 +59,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
   function displayPDFLinks(phase, subject) {
     const pdfCategories = pdfs[phase][subject];
     if (pdfCategories) {
-      // Clear existing table rows
-      pdfTableBody.innerHTML = "";
-      let prevSubject = null;
+      let currentCategory = null; // Track the current category
+      let currentSubject = null; // Track the current subject
   
       for (const category in pdfCategories) {
         const pdfArray = pdfCategories[category];
@@ -75,29 +73,31 @@ document.addEventListener("DOMContentLoaded", function () {
             const phaseCell = newRow.insertCell(0);
             const subjectCell = newRow.insertCell(1);
             const topicCell = newRow.insertCell(2);
-            const buttonCell = index === 0 ? newRow.insertCell(3) : null; // Only add button in the first row of each category
+            const buttonCell = newRow.insertCell(3);
   
-            if (index === 0 || subject !== prevSubject) {
-              phaseCell.textContent = subject === prevSubject ? "" : phase;
+            // Only display phase for the first row of each subject group
+            if (currentSubject !== subject) {
+              phaseCell.textContent = phase;
+              currentSubject = subject;
+            }
+  
+            // Only display subject for the first row of each category
+            if (currentCategory !== category) {
               subjectCell.textContent = subject;
-              prevSubject = subject;
+              currentCategory = category;
             }
   
             // Concatenate category within the topic cell
             topicCell.textContent = pdf.name;
   
-            if (index === 0) {
+            // Add a button for the first row of each category
+            if (currentCategory !== category || index === 0) {
               const pdfButton = document.createElement("button");
-              pdfButton.textContent = `Open IETM`;
+              pdfButton.textContent = "Open IETM";
               pdfButton.addEventListener("click", function () {
-                // Assuming you want to open the first PDF in the category when the button is clicked
-                window.open(pdfArray[0].url, "_blank");
+                window.open(pdf.url, "_blank");
               });
-  
-              if (buttonCell) {
-                buttonCell.appendChild(pdfButton);
-                buttonCell.style.textAlign = "center"; // Center-align the button
-              }
+              buttonCell.appendChild(pdfButton);
             }
           });
         }
@@ -108,8 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
   
-
-
   
   
   
