@@ -56,41 +56,49 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
+
+
+
+
   function displayPDFLinks(phase, subject) {
     const pdfCategories = pdfs[phase][subject];
     if (pdfCategories) {
-      let isFirstCategory = true; // Flag to track the first category within a subject
+      // Clear existing table rows
+      pdfTableBody.innerHTML = "";
+      let prevSubject = null;
+  
       for (const category in pdfCategories) {
         const pdfArray = pdfCategories[category];
         if (pdfArray) {
-          let isFirstSubject = true; // Flag to track the first subject within a category
           pdfArray.forEach(function (pdf, index) {
             const newRow = pdfTableBody.insertRow();
             const phaseCell = newRow.insertCell(0);
             const subjectCell = newRow.insertCell(1);
             const topicCell = newRow.insertCell(2);
-            const buttonCell = newRow.insertCell(3);
+            const buttonCell = index === 0 ? newRow.insertCell(3) : null; // Only add button in the first row of each category
   
-            phaseCell.textContent = isFirstCategory ? phase : ''; // Only display phase for the first category
-            subjectCell.textContent = isFirstSubject ? subject : ''; // Only display subject for the first subject within a category
+            if (index === 0 || subject !== prevSubject) {
+              phaseCell.textContent = subject === prevSubject ? "" : phase;
+              subjectCell.textContent = subject;
+              prevSubject = subject;
+            }
   
             // Concatenate category within the topic cell
-            topicCell.textContent = pdf.name ;
+            topicCell.textContent = pdf.name;
   
-            if (isFirstCategory) {
-              isFirstCategory = false; // Reset the flag after the first category
+            if (index === 0) {
+              const pdfButton = document.createElement("button");
+              pdfButton.textContent = `Open IETM`;
+              pdfButton.addEventListener("click", function () {
+                // Assuming you want to open the first PDF in the category when the button is clicked
+                window.open(pdfArray[0].url, "_blank");
+              });
+  
+              if (buttonCell) {
+                buttonCell.appendChild(pdfButton);
+                buttonCell.style.textAlign = "center"; // Center-align the button
+              }
             }
-            if (isFirstSubject) {
-              isFirstSubject = false; // Reset the flag after the first subject within a category
-            }
-  
-            const pdfButton = document.createElement("button");
-            pdfButton.textContent = "Open IETM";
-            pdfButton.addEventListener("click", function () {
-              window.open(pdf.url, "_blank");
-            });
-  
-            buttonCell.appendChild(pdfButton);
           });
         }
       }
@@ -100,9 +108,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
   
+
+
   
   
   
+
+
   
   
   
